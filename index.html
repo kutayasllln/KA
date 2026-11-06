@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>KA Sabah Radarı</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f0e0d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="KA">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="page">
+
+<header class="top">
+  <div class="brand">
+    <svg class="logo" width="26" height="26" viewBox="0 0 44 44" aria-hidden="true">
+      <circle cx="22" cy="22" r="20" fill="none" stroke="#4a423a" stroke-width="2"/>
+      <circle cx="22" cy="22" r="12" fill="none" stroke="#4a423a" stroke-width="2"/>
+      <path d="M22 22 L37 9" stroke="#ff4d2e" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="22" cy="22" r="3" fill="#ff4d2e"/>
+    </svg>
+    <span class="brand-name">KA Sabah Radarı</span>
+  </div>
+  <button id="refreshBtn" class="ghost" type="button" aria-label="Yenile">Yenile</button>
+</header>
+
+<p id="scanInfo" class="meta" role="status"></p>
+<div id="notice" class="notice" hidden></div>
+
+<section class="hero">
+  <div class="hero-text">
+    <span class="eyebrow" id="heroEyebrow">Canlı tarama</span>
+    <div class="hero-row">
+      <span id="heroCount" class="hero-count">00</span>
+      <h1 id="heroTitle" class="hero-title">başvuru cevabı<br>bugün geldi.</h1>
+    </div>
+    <p id="heroLead" class="lead"></p>
+  </div>
+  <div class="radar" id="radar" aria-hidden="true">
+    <div class="r r1"></div><div class="r r2"></div><div class="r r3"></div>
+    <div class="cross h"></div><div class="cross v"></div>
+    <div class="dot"></div>
+    <div class="sweep"></div>
+    <div id="blips"></div>
+  </div>
+</section>
+
+<section class="push" id="pushBox">
+  <button id="notifBtn" class="primary" type="button">Bildirimleri aç</button>
+  <p id="pushHint" class="hint"></p>
+</section>
+
+<section class="filters">
+  <span class="label">Hesap</span>
+  <div id="tabs" class="seg" role="group" aria-label="Hesap filtresi"></div>
+</section>
+
+<section class="stats" id="stats"></section>
+
+<section class="block">
+  <div class="block-head"><h2>Başvuru dönüşleri</h2><span class="count" id="appsCount">00</span></div>
+  <div id="apps"></div>
+</section>
+
+<section class="block">
+  <div class="block-head"><h2>Cevap almadığın mailler</h2><span class="count" id="waitCount">00</span></div>
+  <p class="hint tight">Gönderdiğin ve 10 gündür yanıt gelmeyen mailler.</p>
+  <div id="waiting"></div>
+</section>
+
+<section class="block">
+  <div class="block-head"><h2>Önemli mailler</h2><span class="count" id="impsCount">00</span></div>
+  <div id="imps"></div>
+</section>
+
+<details class="settings" id="settings">
+  <summary>Bağlantı ayarı</summary>
+  <label for="tokenInput">Bağlantı anahtarı</label>
+  <input id="tokenInput" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Anahtarı buraya yapıştır">
+  <div class="row">
+    <button id="tokenSave" class="primary small" type="button">Kaydet</button>
+    <button id="tokenClear" class="ghost small" type="button">Sil</button>
+  </div>
+  <p class="hint">Anahtar sadece bu telefonda saklanır, depoda yoktur.</p>
+</details>
+
+<footer class="foot">
+  <span id="footLeft"></span>
+  <span id="footRight"></span>
+</footer>
+
+</main>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

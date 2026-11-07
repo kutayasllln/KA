@@ -146,7 +146,13 @@
     var safe = safeLink(url);
     if (!safe) return null;
     var a = el("a", "open", text);
-    a.href = safe; a.target = "_blank"; a.rel = "noopener noreferrer";
+    // Önce telefondaki Gmail uygulaması denenir; açılmazsa (yüklü değilse) web bağlantısı açılır.
+    a.href = safe; a.rel = "noopener noreferrer";
+    a.addEventListener("click", function (ev) {
+      ev.preventDefault();
+      try { window.location.href = "googlegmail://"; } catch (e) { /* yok say */ }
+      setTimeout(function () { if (!document.hidden) window.open(safe, "_blank", "noopener"); }, 1500);
+    });
     return a;
   }
 
@@ -163,7 +169,7 @@
     meta.appendChild(a);
     meta.appendChild(el("span", "time", relTime(Number(m.time))));
     row.appendChild(meta);
-    var l = linkEl(m.link, "Gmail'de aç ↗"); if (l) row.appendChild(l);
+    var l = linkEl(m.link, "Gmail uygulamasında aç ↗"); if (l) row.appendChild(l);
     return row;
   }
 
@@ -187,7 +193,7 @@
     meta.appendChild(a);
     if (w.sentTime) meta.appendChild(el("span", "time", "Gönderildi: " + dateLabel(Number(w.sentTime))));
     row.appendChild(meta);
-    var l = linkEl(w.link, "Gönderilen maili aç ↗"); if (l) row.appendChild(l);
+    var l = linkEl(w.link, "Gmail uygulamasında aç ↗"); if (l) row.appendChild(l);
     return row;
   }
 

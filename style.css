@@ -124,3 +124,6 @@ h2 { margin: 0; font-family: var(--display); font-weight: 700; font-size: 24px; 
   .stats { grid-template-columns: repeat(4, 1fr); }
   .radar { margin: 0; flex: 0 0 280px; }
 }
+
+.row-item.dim-row { opacity: .62; }
+.row-item.dim-row .subject { font-weight: 500; }

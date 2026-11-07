@@ -92,14 +92,15 @@
       status: d.status || {},
       apps: Array.isArray(d.apps) ? d.apps : [],
       imps: Array.isArray(d.imps) ? d.imps : [],
+      all: Array.isArray(d.all) ? d.all : (Array.isArray(d.apps) ? d.apps : []).concat(Array.isArray(d.imps) ? d.imps : []),
       waiting: Array.isArray(d.waiting) ? d.waiting : []
     };
   }
 
   function fetchData() {
     var token = load(TOKEN_KEY) || "";
-    if (!CFG.dataUrl) { state.demo = true; state.data = demoData(); state.error = ""; return Promise.resolve(); }
-    if (!token) { state.demo = true; state.data = demoData(); state.error = "token"; return Promise.resolve(); }
+    if (!CFG.dataUrl) { state.demo = true; state.data = normalize(demoData()); state.error = ""; return Promise.resolve(); }
+    if (!token) { state.demo = true; state.data = normalize(demoData()); state.error = "token"; return Promise.resolve(); }
     var url = CFG.dataUrl + (CFG.dataUrl.indexOf("?") === -1 ? "?" : "&") + "token=" + encodeURIComponent(token);
     var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
     var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 25000) : null;
@@ -115,7 +116,7 @@
         var cached = load(CACHE_KEY);
         state.error = "fetch:" + (e && e.name === "AbortError" ? "Zaman aşımı" : (e && e.message) || "bağlantı hatası");
         if (cached) { try { state.data = normalize(JSON.parse(cached)); state.demo = false; return; } catch (x) { /* bozuk önbellek */ } }
-        state.demo = true; state.data = demoData();
+        state.demo = true; state.data = normalize(demoData());
       })
       .then(function () { if (timer) clearTimeout(timer); });
   }
@@ -244,7 +245,7 @@
 
   function render() {
     var d = state.data; if (!d) return;
-    var apps = shownFor(d.apps), imps = shownFor(d.imps), wait = shownFor(d.waiting);
+    var apps = shownFor(d.apps), imps = shownFor(d.imps), wait = shownFor(d.waiting), everyMail = shownFor(d.all);
     var now = Date.now();
 
     // üst bilgi
@@ -294,6 +295,8 @@
     fillList($("apps"), apps, mailRow, "Bugün başvuru cevabı yok. Cevap geldiğinde burada görünür.");
     fillList($("waiting"), wait, waitRow, "Cevap bekleyen başvuru yok.");
     fillList($("imps"), imps, mailRow, "Bugün önemli mail yok.");
+    fillList($("all"), everyMail, function (m) { var r = mailRow(m); if (m.kind === "noise") r.classList.add("dim-row"); return r; }, "Son 2 günde gelen mail yok.");
+    $("allCount").textContent = pad(everyMail.length);
     $("appsCount").textContent = pad(apps.length);
     $("waitCount").textContent = pad(wait.length);
     $("impsCount").textContent = pad(imps.length);
